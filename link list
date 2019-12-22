@@ -1,0 +1,197 @@
+#include<stdio.h>
+#include<stdlib.h>
+struct node
+{
+    char info;
+    struct node*next;
+};
+/******************************************/
+struct node*p;
+/******************************************/
+struct node*GetNode()
+{
+   // struct node*p;
+    p=(struct node*)malloc(sizeof (struct node));
+    return p;
+};
+/******************************************/
+void InsBeg(struct node **START,char x)
+{
+    p=GetNode();
+    p->info=x;
+    p->next=*START;
+    *START=p;
+}
+/******************************************/
+void InsEnd(struct node **START,char x)
+{
+     struct node*p;
+     struct node*q;
+    if((*START)==NULL)
+        InsBeg(&(*START),x);
+    else{
+        p=*START;
+        while (p->next!=NULL)
+            {p=p->next;}
+
+        q=GetNode();
+        q->info=x;
+        p->next=q;
+        q->next=NULL;
+    }
+}
+/******************************************/
+void Traverse(struct node *START)
+{
+    p=START;
+    while (p!=NULL)
+    {
+        printf("%c",p->info);
+        p=p->next;
+    }
+}
+/******************************************/
+struct node* search(struct node *START,char x)
+{
+    struct node*p;
+    p=START;
+    while(p!=NULL)
+    {
+        if(p->info==x)
+        {
+            return p;
+        }
+        else
+        {
+            p=p->next;
+        }
+    }
+}
+/******************************************/
+void InsAfter(struct node**ptr,char x)
+{
+    struct node*q;
+    q=GetNode();
+    q->info=x;
+    q->next=(*ptr)->next;
+    (*ptr)->next=q;
+}
+/******************************************/
+int DelBeg(struct node**START)
+{
+    int x;
+    struct node*p;
+    if(*START==NULL)
+    {
+        printf("Void deletion");
+    }
+    else
+    {
+        p=*START;
+        *START=p->next;
+        x=p->info;
+        free(p);
+        return x;
+    }
+}
+/***************************************/
+int DelEnd(struct node**START)
+{
+    int x;
+    struct node*p,*q;
+    if(*START==NULL)
+    {
+        printf("Void deletion");
+        exit(1);
+    }
+    else
+    {
+        q=NULL;
+        p=*START;
+        while(p->next!=NULL){
+            q=p;
+            p=p->next;
+        }
+        if(q!=NULL)
+        {
+            q->next=NULL;
+        }
+        else
+            START=NULL;
+        x=p->info;
+        free(p);
+        return x;
+    }
+}
+/******************************************/
+int DelAfter(struct node**p)
+{
+    int x;
+    struct node*q;
+    if((*p)==NULL||(*p)->next==NULL)
+    {
+        printf("Void deletion");
+        exit(1);
+    }
+    else{
+        q=(*p)->next;
+        (*p)->next=q->next;
+        x=q->info;
+        free(q);
+        return x;
+    }
+}
+/******************************************/
+int DelSpecific(struct node**START,char x)
+{
+    struct node*p,*q;
+    p=(*START);
+    q=NULL;
+    while(p!=NULL)
+    {
+        if(p->info==x){
+            p=p->next;
+            if(q==NULL)
+                DelBeg(&(*START));
+            else
+                DelAfter(&(q));
+        }
+        else
+        {
+            q=p;
+            p=p->next;
+        }
+    }
+}
+/******************************************/
+int main()
+{
+    struct node *ptr;
+    struct node*START;
+    int t;
+    int ch;
+    char cha,cha1;
+    START=NULL;
+    InsBeg(&START,'K');
+    InsBeg(&START,'I');
+    InsBeg(&START,'W');
+    InsBeg(&START,'T');
+    InsBeg(&START,'A');
+    InsBeg(&START,'S');
+    InsEnd(&START,'S');
+    InsEnd(&START,'A');
+    InsEnd(&START,'X');
+    InsEnd(&START,'N');
+    InsEnd(&START,'A');
+    t=DelBeg(&START);
+    ptr=search(START,'X');
+    InsAfter(&ptr,'E');
+    t=DelSpecific(&START,'A');
+    t=DelEnd(&START);
+    ptr=search(START,'W');
+    t=DelAfter(&ptr);
+    Traverse(START);
+    return 0;
+}
+
+/*******************************************************************************************************************************************************/
