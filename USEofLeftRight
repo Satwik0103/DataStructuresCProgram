@@ -1,0 +1,18 @@
+int solution(string &S) {
+    int c=0,d=0,e=0,i;
+    // write your code in C++14 (g++ 6.2.0)
+    i=0;
+    while(S[i]!='\0'){
+        if(S[i]=='R')
+        c=c+1;
+        if(S[i]=='L')
+        d=d+1;
+        if(c==d){
+            e=e+1;
+            c=0;
+            d=0;
+        }
+        i++;
+    }
+    return e;
+}
